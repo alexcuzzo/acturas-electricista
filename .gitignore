@@ -1,0 +1,4 @@
+# clasp: contiene el scriptId y credenciales locales
+.clasp.json
+.clasprc.json
+node_modules/
