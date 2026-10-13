@@ -1,0 +1,210 @@
+:root {
+  --azul: #1d2b3a;
+  --amarillo: #f5b800;
+  --fondo: #eef1f4;
+  --tarjeta: #ffffff;
+  --texto: #1d2b3a;
+  --suave: #5d6b78;
+  --borde: #cfd6dd;
+  --peligro: #b3261e;
+  --radio: 10px;
+}
+
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-size: 16px;
+  background: var(--fondo);
+  color: var(--texto);
+}
+h2 { font-size: 1.05rem; margin: 0 0 12px; }
+[hidden] { display: none !important; }
+
+/* ---------- Barra superior ---------- */
+.barra {
+  position: sticky; top: 0; z-index: 10;
+  display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+  padding: 8px 16px;
+  background: var(--azul); color: #fff;
+}
+.barra-icono { width: 32px; height: 32px; }
+.barra-titulo { font-weight: 700; font-size: 1.1rem; margin-right: auto; }
+.pestanas { display: flex; gap: 4px; overflow-x: auto; max-width: 100%; }
+.pestanas button {
+  background: transparent; color: #cfd8e0; border: 0; border-radius: 8px;
+  padding: 10px 12px; font: inherit; font-weight: 600; cursor: pointer; white-space: nowrap;
+}
+.pestanas button.activa { background: var(--amarillo); color: var(--azul); }
+
+main { max-width: 980px; margin: 0 auto; padding: 16px; }
+
+.aviso {
+  max-width: 980px; margin: 12px auto 0; padding: 12px 16px;
+  background: #fff4cc; border-left: 5px solid var(--amarillo); border-radius: 6px;
+}
+.aviso button { margin-left: 8px; }
+
+/* ---------- Formularios ---------- */
+.tarjeta {
+  background: var(--tarjeta); border-radius: var(--radio);
+  padding: 16px; margin-bottom: 16px;
+  box-shadow: 0 1px 2px rgba(0,0,0,.06);
+}
+label { display: flex; flex-direction: column; gap: 4px; font-size: .85rem; font-weight: 600; color: var(--suave); }
+input, select, textarea {
+  font: inherit; font-size: 1rem; color: var(--texto);
+  padding: 10px; border: 1px solid var(--borde); border-radius: 8px; background: #fff;
+  width: 100%; min-width: 0;
+}
+input:focus, select:focus { outline: 2px solid var(--amarillo); border-color: var(--azul); }
+.check { flex-direction: row; align-items: center; gap: 8px; margin-top: 12px; color: var(--texto); }
+.check input { width: auto; }
+.fila-2, .fila-3 { display: grid; gap: 12px; margin-bottom: 12px; }
+.fila-2 { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+.fila-3 { grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); }
+
+button, .boton {
+  font: inherit; font-weight: 600; cursor: pointer;
+  border-radius: 8px; padding: 10px 16px; border: 1px solid transparent;
+  display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+}
+.principal { background: var(--azul); color: #fff; }
+.principal:hover { background: #2b3f54; }
+.secundario { background: #fff; color: var(--azul); border-color: var(--borde); }
+.secundario:hover { border-color: var(--azul); }
+.peligro { color: var(--peligro); }
+.mini { padding: 6px 10px; font-size: .85rem; }
+.acciones { display: flex; gap: 8px; justify-content: flex-end; flex-wrap: wrap; }
+.acciones.izquierda { justify-content: flex-start; }
+.acciones .principal { min-width: 180px; }
+label.boton { flex-direction: row; font-size: 1rem; color: var(--azul); }
+
+/* ---------- Líneas de la factura ---------- */
+.linea {
+  display: grid; gap: 8px; align-items: end;
+  grid-template-columns: 90px 1fr 90px 100px 80px 110px 40px;
+  padding: 10px 0; border-bottom: 1px dashed var(--borde);
+}
+.linea .importe { font-weight: 700; text-align: right; padding: 10px 0; }
+.linea .quitar { padding: 8px; color: var(--peligro); background: none; border: 0; font-size: 1.3rem; }
+@media (max-width: 760px) {
+  .linea { grid-template-columns: 1fr 1fr 1fr; }
+  .linea .l-concepto { grid-column: 1 / -1; order: -1; }
+  .linea .l-albaran { order: 5; }
+  .linea .importe { order: 6; align-self: center; }
+  .linea .quitar { order: 7; justify-self: end; }
+}
+#btn-linea { margin-top: 12px; }
+
+.totales { display: grid; grid-template-columns: 1fr auto; gap: 6px 16px; margin: 12px 0 0; max-width: 360px; margin-left: auto; }
+.totales dt { color: var(--suave); }
+.totales dd { margin: 0; text-align: right; font-variant-numeric: tabular-nums; }
+.totales .total { font-size: 1.25rem; font-weight: 800; color: var(--texto); }
+
+/* ---------- Listados ---------- */
+.tabla-scroll { overflow-x: auto; }
+.listado { width: 100%; border-collapse: collapse; }
+.listado th, .listado td { padding: 10px 8px; border-bottom: 1px solid #e6eaee; text-align: left; white-space: nowrap; }
+.listado th { font-size: .8rem; color: var(--suave); text-transform: uppercase; }
+.listado td.num, .listado th.num { text-align: right; font-variant-numeric: tabular-nums; }
+.listado td:last-child { text-align: right; }
+.listado td:last-child button { margin-left: 4px; }
+.vacio { color: var(--suave); text-align: center; margin: 16px 0; }
+.pequeno { font-size: .85rem; color: var(--suave); }
+
+.logo-zona { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; margin-bottom: 16px; }
+.logo-zona img { max-width: 260px; max-height: 90px; background: #fff; border: 1px dashed var(--borde); padding: 6px; border-radius: 6px; }
+.logo-zona > div { display: flex; flex-direction: column; gap: 8px; align-items: flex-start; }
+
+/* ---------- Visor ---------- */
+#visor { position: fixed; inset: 0; z-index: 50; background: #59636d; display: flex; flex-direction: column; }
+.visor-barra { display: flex; gap: 8px; align-items: center; padding: 8px 16px; background: var(--azul); color: #fff; }
+.visor-barra span { flex: 1; text-align: center; font-weight: 600; }
+.visor-papel { flex: 1; overflow: auto; padding: 16px; }
+#hoja { margin: 0 auto; width: 210mm; background: #fff; box-shadow: 0 4px 20px rgba(0,0,0,.35); }
+@media (max-width: 820px) {
+  #hoja { zoom: .45; }
+  .visor-barra span { display: none; }
+}
+
+/* =========================================================
+   FACTURA (diseño de la hoja A4, igual en pantalla e impresa)
+   ========================================================= */
+.fx {
+  position: relative;
+  width: 210mm; min-height: 297mm; padding: 12mm 12mm 10mm;
+  font-family: Arial, Helvetica, sans-serif; font-size: 9.5pt; color: #000;
+  display: flex; flex-direction: column;
+}
+.fx table { border-collapse: collapse; width: 100%; }
+.fx-cab { display: grid; grid-template-columns: 1fr 1fr; gap: 5mm; margin-bottom: 5mm; }
+.fx-emisor { border: 1px solid #000; padding: 3mm 4mm; line-height: 1.45; }
+.fx-emisor img { display: block; max-width: 70mm; max-height: 22mm; margin-bottom: 2mm; }
+.fx-emisor .fx-comercial { font-weight: 700; font-size: 10.5pt; }
+.fx-derecha { display: flex; flex-direction: column; gap: 3mm; }
+.fx-cliente { border: 1px solid #000; border-right-width: 2px; border-bottom-width: 2px; padding: 2mm 3mm; }
+.fx-cliente td { padding: .6mm 0; vertical-align: top; }
+.fx-cliente td:first-child { width: 17mm; font-size: 7.5pt; }
+.fx-cliente td:last-child { font-weight: 700; font-size: 9.5pt; }
+.fx-fechanum th, .fx-fechanum td { border: 1px solid #000; text-align: center; padding: 1mm; }
+.fx-fechanum th { background: #d9d9d9; font-size: 8.5pt; }
+.fx-fechanum td { font-weight: 700; }
+.fx-fechanum { border: 1px solid #000; border-right-width: 2px; border-bottom-width: 2px; }
+
+.fx-lineas { border: 1px solid #000; }
+.fx-lineas th {
+  background: #d9d9d9; border: 1px solid #000; border-bottom-width: 2px;
+  font-size: 8pt; padding: 1.5mm 1mm; text-align: center; line-height: 1.1;
+}
+.fx-lineas td {
+  border-left: 1px solid #000; border-right: 1px solid #000; border-bottom: 1px solid #000;
+  height: 6.3mm; padding: 0 1.5mm; font-size: 9pt;
+}
+.fx-lineas td.n { text-align: right; font-variant-numeric: tabular-nums; }
+.fx-lineas td.c { padding-left: 3mm; }
+.fx-lineas col.c-alb { width: 15mm; } .fx-lineas col.c-uni { width: 16mm; }
+.fx-lineas col.c-pre { width: 17mm; } .fx-lineas col.c-dto { width: 14mm; }
+.fx-lineas col.c-pdt { width: 17mm; } .fx-lineas col.c-tot { width: 19mm; }
+
+.fx-bruto { display: flex; justify-content: flex-end; margin-top: 2mm; }
+.fx-bruto table, .fx-imp table { width: auto; border: 1px solid #000; border-right-width: 2px; border-bottom-width: 2px; }
+.fx-bruto td, .fx-imp td { border: 1px solid #000; padding: 1mm 2mm; font-weight: 700; font-size: 9pt; }
+.fx-bruto td:first-child { width: 33mm; }
+.fx-bruto td:last-child, .fx-imp td:last-child { width: 19mm; text-align: right; }
+.fx-imp { display: flex; justify-content: flex-end; margin-top: 2mm; }
+.fx-imp td:first-child { width: 30mm; text-align: center; }
+.fx-imp td:nth-child(2) { width: 17mm; text-align: center; }
+
+.fx-total {
+  margin: 4mm 0 0 auto; width: 136mm;
+  display: flex; justify-content: space-between; align-items: center;
+  background: #d9d9d9; border: 1px solid #000; border-right-width: 3px; border-bottom-width: 3px;
+  padding: 2mm 3mm; font-size: 14pt; font-weight: 700; font-style: italic;
+}
+.fx-total span:first-child { margin-left: 15mm; }
+
+.fx-pago { margin: 7mm auto 0; width: 152mm; display: flex; flex-direction: column; gap: 1.5mm; }
+.fx-pago div { display: grid; grid-template-columns: 37mm 1fr; border: 1px solid #000; border-right-width: 2px; border-bottom-width: 2px; }
+.fx-pago b { padding: .8mm 2mm; text-align: center; border-right: 1px solid #000; font-size: 9.5pt; }
+.fx-pago span { padding: .8mm 3mm; font-weight: 700; font-size: 8.5pt; }
+
+.fx-obs { margin-top: 5mm; font-size: 8.5pt; }
+.fx-pie { margin-top: auto; padding-top: 4mm; text-align: center; font-size: 7.5pt; color: #444; }
+.fx-borrador {
+  position: absolute; top: 40%; left: 0; right: 0; text-align: center;
+  font-size: 70pt; font-weight: 900; color: rgba(200, 0, 0, .12); transform: rotate(-25deg); pointer-events: none;
+}
+
+/* ---------- Impresión ---------- */
+@page { size: A4; margin: 0; }
+@media print {
+  body { background: #fff; }
+  body > *:not(#visor) { display: none !important; }
+  #visor { position: static; display: block; background: #fff; }
+  .visor-barra { display: none; }
+  .visor-papel { padding: 0; overflow: visible; }
+  #hoja { box-shadow: none; zoom: 1 !important; width: auto; }
+  .fx { min-height: 0; }
+  * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+}

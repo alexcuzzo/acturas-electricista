@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Facturas</title>
+  <meta name="theme-color" content="#1d2b3a">
+  <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="icon-192.png">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="barra">
+    <img src="icon.svg" alt="" class="barra-icono">
+    <span class="barra-titulo">Facturas</span>
+    <nav class="pestanas" role="tablist">
+      <button data-tab="nueva" class="activa">Nueva factura</button>
+      <button data-tab="facturas">Facturas</button>
+      <button data-tab="clientes">Clientes</button>
+      <button data-tab="datos">Mis datos</button>
+    </nav>
+  </header>
+
+  <div id="aviso" class="aviso" hidden></div>
+
+  <main>
+    <!-- ===================== NUEVA FACTURA ===================== -->
+    <section id="tab-nueva" class="tab">
+      <form id="f-factura" autocomplete="off">
+        <div class="tarjeta fila-2">
+          <label>Fecha <input type="date" name="fecha" required></label>
+          <label>Nº factura <input name="numero" inputmode="numeric" placeholder="automático"></label>
+        </div>
+
+        <div class="tarjeta">
+          <h2>Cliente</h2>
+          <label>Elegir cliente guardado
+            <select name="clienteId"><option value="">— Cliente nuevo —</option></select>
+          </label>
+          <div class="fila-2">
+            <label>Nombre / Razón social <input name="c_nombre" required></label>
+            <label>CIF / NIF <input name="c_nif"></label>
+            <label>Dirección <input name="c_direccion"></label>
+            <label>Población y CP <input name="c_poblacion"></label>
+            <label>Provincia <input name="c_provincia"></label>
+            <label>Email <input name="c_email" type="email"></label>
+          </div>
+          <label class="check"><input type="checkbox" name="guardarCliente" checked> Guardar en mis clientes</label>
+        </div>
+
+        <div class="tarjeta">
+          <h2>Artículos y trabajos</h2>
+          <div id="lineas"></div>
+          <button type="button" id="btn-linea" class="secundario">+ Añadir línea</button>
+        </div>
+
+        <div class="tarjeta">
+          <div class="fila-3">
+            <label>I.V.A.
+              <select name="iva"><option value="21">21%</option><option value="10">10% (reparación vivienda particular)</option><option value="0">0%</option></select>
+            </label>
+            <label>Rec. Equiv.
+              <select name="re"><option value="0">—</option><option value="5.2">5,2%</option><option value="1.4">1,4%</option></select>
+            </label>
+            <label>Retención IRPF
+              <select name="ret"><option value="0">—</option><option value="1">1%</option><option value="7">7%</option><option value="15">15%</option></select>
+            </label>
+          </div>
+          <div class="fila-3">
+            <label>Forma de pago <input name="formaPago" list="formas-pago"></label>
+            <label>Vencimiento <input name="vencimiento" placeholder="ej. 30 días, al contado…"></label>
+            <label>Observaciones <input name="observaciones"></label>
+          </div>
+          <datalist id="formas-pago">
+            <option value="Transferencia bancaria"><option value="Al contado"><option value="Bizum"><option value="Recibo domiciliado">
+          </datalist>
+          <dl class="totales" id="totales"></dl>
+        </div>
+
+        <div class="acciones">
+          <button type="button" id="btn-vista" class="secundario">Vista previa</button>
+          <button type="button" id="btn-limpiar" class="secundario">Vaciar</button>
+          <button type="submit" class="principal">Guardar factura</button>
+        </div>
+      </form>
+    </section>
+
+    <!-- ===================== FACTURAS ===================== -->
+    <section id="tab-facturas" class="tab" hidden>
+      <div class="tarjeta fila-3">
+        <label>Año <select id="filtro-anio"></select></label>
+        <label>Trimestre
+          <select id="filtro-trim"><option value="">Todo el año</option><option value="1">1T (ene–mar)</option><option value="2">2T (abr–jun)</option><option value="3">3T (jul–sep)</option><option value="4">4T (oct–dic)</option></select>
+        </label>
+        <label>&nbsp;<button type="button" id="btn-csv" class="secundario">Descargar para el gestor (Excel)</button></label>
+      </div>
+      <dl class="totales tarjeta" id="resumen"></dl>
+      <div class="tarjeta tabla-scroll">
+        <table class="listado">
+          <thead><tr><th>Nº</th><th>Fecha</th><th>Cliente</th><th class="num">Base</th><th class="num">Total</th><th></th></tr></thead>
+          <tbody id="lista-facturas"></tbody>
+        </table>
+        <p id="sin-facturas" class="vacio" hidden>No hay facturas en este periodo.</p>
+      </div>
+    </section>
+
+    <!-- ===================== CLIENTES ===================== -->
+    <section id="tab-clientes" class="tab" hidden>
+      <form id="f-cliente" class="tarjeta" autocomplete="off">
+        <h2 id="titulo-cliente">Nuevo cliente</h2>
+        <input type="hidden" name="cid">
+        <div class="fila-2">
+          <label>Nombre / Razón social <input name="nombre" required></label>
+          <label>CIF / NIF <input name="nif"></label>
+          <label>Dirección <input name="direccion"></label>
+          <label>Población y CP <input name="poblacion"></label>
+          <label>Provincia <input name="provincia"></label>
+          <label>Email <input name="email" type="email"></label>
+        </div>
+        <div class="acciones">
+          <button type="reset" class="secundario">Cancelar</button>
+          <button type="submit" class="principal">Guardar cliente</button>
+        </div>
+      </form>
+      <div class="tarjeta tabla-scroll">
+        <table class="listado">
+          <thead><tr><th>Nombre</th><th>CIF / NIF</th><th>Población</th><th></th></tr></thead>
+          <tbody id="lista-clientes"></tbody>
+        </table>
+        <p id="sin-clientes" class="vacio" hidden>Todavía no hay clientes.</p>
+      </div>
+    </section>
+
+    <!-- ===================== MIS DATOS ===================== -->
+    <section id="tab-datos" class="tab" hidden>
+      <form id="f-datos" class="tarjeta" autocomplete="off">
+        <h2>Datos que salen en la factura</h2>
+        <div class="fila-2">
+          <label>Nombre comercial <input name="comercial" placeholder="ELECTRICIDAD …"></label>
+          <label>Nombre y apellidos <input name="nombre" required></label>
+          <label>NIF <input name="nif" required></label>
+          <label>Nº instalador autorizado <input name="instalador"></label>
+          <label>Dirección <input name="direccion"></label>
+          <label>Teléfono <input name="telefono" inputmode="tel"></label>
+          <label>Email <input name="email" type="email"></label>
+          <label>IBAN (Banco) <input name="iban"></label>
+        </div>
+        <h2>Valores por defecto</h2>
+        <div class="fila-3">
+          <label>Forma de pago <input name="formaPago" list="formas-pago"></label>
+          <label>Vencimiento <input name="vencimiento"></label>
+          <label>Serie (letra delante del nº, opcional) <input name="serie" maxlength="6"></label>
+          <label>Primer nº de factura del año <input name="primerNumero" type="number" min="1" step="1"></label>
+          <label>I.V.A. habitual
+            <select name="iva"><option value="21">21%</option><option value="10">10%</option></select>
+          </label>
+          <label>Retención habitual
+            <select name="ret"><option value="0">—</option><option value="1">1%</option><option value="7">7%</option><option value="15">15%</option></select>
+          </label>
+        </div>
+        <h2>Logo</h2>
+        <div class="logo-zona">
+          <img id="logo-preview" alt="Logo">
+          <div>
+            <label class="boton secundario">Cambiar logo… <input type="file" id="logo-file" accept="image/*" hidden></label>
+            <button type="button" id="logo-defecto" class="secundario">Usar el logo por defecto</button>
+            <label class="check"><input type="checkbox" name="mostrarLogo"> Poner el logo en las facturas</label>
+          </div>
+        </div>
+        <div class="acciones">
+          <button type="submit" class="principal">Guardar mis datos</button>
+        </div>
+      </form>
+
+      <div class="tarjeta">
+        <h2>Copia de seguridad</h2>
+        <p>Las facturas se guardan <strong>solo en este navegador</strong>. Descarga una copia de vez en cuando
+          (y guárdala en el correo o en un USB). Con ella también puedes pasar todo a otro ordenador o al móvil.</p>
+        <p id="info-copia" class="pequeno"></p>
+        <div class="acciones izquierda">
+          <button type="button" id="btn-backup" class="principal">Descargar copia</button>
+          <label class="boton secundario">Restaurar copia… <input type="file" id="restore-file" accept=".json,application/json" hidden></label>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ===================== VISOR / IMPRESIÓN ===================== -->
+  <div id="visor" hidden>
+    <div class="visor-barra">
+      <button type="button" id="visor-cerrar" class="secundario">← Volver</button>
+      <span id="visor-titulo"></span>
+      <button type="button" id="visor-imprimir" class="principal">Imprimir / Guardar PDF</button>
+    </div>
+    <div class="visor-papel"><div id="hoja"></div></div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

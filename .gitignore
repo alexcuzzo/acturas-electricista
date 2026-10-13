@@ -1,4 +1,3 @@
-# clasp: contiene el scriptId y credenciales locales
-.clasp.json
-.clasprc.json
-node_modules/
+# Copias de seguridad con datos personales: nunca al repositorio
+*.json
+!manifest.webmanifest

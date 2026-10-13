@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 140" role="img" aria-label="Electricidad Camilo">
+  <!-- Emblema: círculo con rayo -->
+  <circle cx="70" cy="70" r="62" fill="#1d2b3a"/>
+  <circle cx="70" cy="70" r="54" fill="none" stroke="#f5b800" stroke-width="4"/>
+  <path d="M80 18 L42 78 H66 L56 122 L100 56 H75 Z" fill="#f5b800" stroke="#f5b800" stroke-width="3" stroke-linejoin="round"/>
+  <!-- Texto -->
+  <text x="150" y="62" font-family="Arial, Helvetica, sans-serif" font-size="30" font-weight="700" letter-spacing="3" fill="#1d2b3a">ELECTRICIDAD</text>
+  <text x="148" y="108" font-family="Arial Black, Arial, Helvetica, sans-serif" font-size="46" font-weight="900" letter-spacing="2" fill="#f5b800" stroke="#1d2b3a" stroke-width="1.2">CAMILO</text>
+  <rect x="150" y="120" width="330" height="4" fill="#1d2b3a"/>
+</svg>

@@ -1,55 +1,58 @@
-# Facturas con Google Sheets
+# Facturas — Electricidad
 
-Plantilla de facturación para un autónomo (electricista) hecha con Google Sheets + Apps Script:
-numeración automática, cálculo de IVA y retención, PDF en Google Drive, envío por email y libro de facturas emitidas.
+Aplicación web sencilla para hacer facturas. **No necesita cuenta de Google ni de nada**: se abre en el navegador
+(ordenador o móvil) y funciona incluso sin conexión.
 
-```
-src/Codigo.js        → el script
-src/appsscript.json  → manifiesto (zona horaria y permisos)
-```
+- Factura con el mismo formato que la de papel: Albarán, Artículo, Unidades, Precio, % Dto., Precio Dto., Total;
+  Total bruto, I.V.A., Rec. Equiv.; forma de pago, banco y vencimiento.
+- Logo en la factura (se puede cambiar en *Mis datos*).
+- Numeración automática y correlativa por año (sigue desde el número que le digas).
+- I.V.A. 21% / 10%, recargo de equivalencia y retención IRPF opcionales.
+- Lista de clientes, duplicar facturas, y resumen por trimestre con descarga para el gestor (Excel/CSV).
+- Imprimir o guardar en PDF desde el botón **Imprimir / Guardar PDF**.
 
-> Los datos personales (NIF, IBAN, clientes) se escriben en la hoja de cálculo, **nunca en este repositorio**.
+## Dónde se guardan los datos
 
-## Instalar (una sola vez, 5 minutos, mejor desde el ordenador)
+**Solo en el navegador del dispositivo donde se usa** (no se suben a ningún sitio, tampoco a GitHub).
+Por eso:
 
-1. Entra en https://sheets.new con la cuenta de Google de tu padre. Ponle de nombre **Facturas**.
-2. Menú **Extensiones → Apps Script**.
-3. Borra lo que haya en el editor, pega todo el contenido de `src/Codigo.js` y pulsa el disquete (Guardar).
-4. Arriba, en el desplegable de funciones, elige **configurar** y pulsa **Ejecutar**.
-   - Google pedirá permisos: *Revisar permisos → elegir la cuenta → Configuración avanzada → Ir a Facturas (no seguro) → Permitir*.
-     Sale el aviso porque el script lo has hecho tú, no Google; solo accede a esta hoja, a su Drive y para enviar emails desde su Gmail.
-5. Vuelve a la hoja y recárgala: aparece el menú **Facturas**.
-6. Rellena la hoja **Datos** (nombre, NIF, dirección, IBAN…) y añade clientes en **Clientes**.
+- Usarlo siempre en el **mismo dispositivo y navegador**.
+- En *Mis datos → Descargar copia* se baja un archivo `.json` con todo. Hay que hacerlo de vez en cuando
+  (la propia aplicación avisa) y guardarlo en el correo o en un USB.
+- Con *Restaurar copia* se recupera todo, o se pasa a otro ordenador o al móvil.
+- No usarlo en modo incógnito, y no borrar los "datos de sitios" del navegador.
 
-## Uso diario
+## Publicarlo (GitHub Pages)
 
-1. **Facturas → Nueva factura**: se pone sola el número (2026-001, 2026-002…) y la fecha de hoy.
-2. Elige el cliente en la casilla amarilla y rellena las líneas: concepto, tipo, cantidad y precio.
-   Ejemplo: "Cambio de cuadro eléctrico" · Mano de obra · 3 · 35 €.
-3. Revisa el IVA (21% o 10% en reparaciones de viviendas de particulares) y la retención (0% normalmente; 1% si está en módulos y el cliente es empresa o autónomo).
-4. **Facturas → Guardar factura en PDF**: crea el PDF en Drive (`Facturas/2026/`), lo apunta en **Registro** y pregunta si quieres mandarlo por email al cliente.
+1. En GitHub: **Settings → Pages → Build and deployment → Source: Deploy from a branch**,
+   rama `main`, carpeta `/ (root)` → **Save**.
+2. A los 1–2 minutos estará en `https://<usuario>.github.io/<repositorio>/`.
 
-La hoja **Registro** tiene la columna *Trimestre*: filtrando por ella sale la lista de facturas para el gestor (modelos 303 y 130/131).
+> GitHub Pages en repositorios **privados** solo funciona con GitHub Pro. Con cuenta gratuita, el repositorio tiene
+> que ser **público**. No pasa nada: en el código no hay ningún dato personal, todo se escribe en la aplicación.
 
-## Desde el móvil
+En el móvil: abrir la dirección y en el menú del navegador **"Añadir a pantalla de inicio"**; queda como una app.
 
-En la app de Google Sheets los menús de los scripts no aparecen. Se puede rellenar la factura en el móvil y luego pulsar "Guardar" desde el ordenador.
-Si lo va a usar mucho con el móvil, se puede añadir un botón (casilla de verificación) que lance el guardado.
+## Primer uso
 
-## Importante
+1. *Mis datos*: nombre, NIF, nº de instalador, dirección, teléfono, IBAN y **primer nº de factura del año**
+   (si ya llevas 17 facturas este año, pon 18).
+2. *Nueva factura*: fecha, cliente, líneas → **Guardar factura** → **Imprimir / Guardar PDF**.
 
-- No borres filas del **Registro**: la numeración se calcula a partir de él y tiene que ser correlativa.
-- Si hay que anular una factura, no se borra: se hace una **factura rectificativa** (con importes en negativo) y se apunta en las observaciones a qué factura rectifica.
-- **VeriFactu**: a partir de julio de 2027 (fecha prevista para autónomos) los programas de facturación tienen que cumplir VeriFactu, y esta hoja no lo cumple. Hasta entonces sirve; para esa fecha conviene pasarse a la aplicación gratuita de la Agencia Tributaria o a un programa homologado. Las facturas antiguas seguirán en el Registro y en Drive.
+Para mandar la factura por WhatsApp o email: guardarla como PDF y adjuntarla.
 
-## Opcional: subir cambios desde este repositorio con clasp
+## Avisos
 
-Para no tener que copiar y pegar cada vez que se cambie el código:
+- Una factura guardada no se modifica. Solo se puede borrar la última (por si te acabas de equivocar).
+  Si ya se entregó al cliente, lo correcto es hacer una **factura rectificativa** con importes en negativo.
+- **VeriFactu**: cuando entre en vigor para autónomos (prevista para julio de 2027), las facturas hechas con programa
+  tendrán que hacerse con un programa adaptado. Esta aplicación no lo está; para entonces habrá que pasar a la
+  aplicación gratuita de la Agencia Tributaria o a un programa homologado.
 
-```bash
-npm install -g @google/clasp
-clasp login
-# El ID está en Apps Script → Configuración del proyecto → ID de la secuencia de comandos
-clasp clone <ID_DEL_SCRIPT> --rootDir src   # la primera vez (crea .clasp.json, que no se sube a git)
-clasp push                                   # sube src/ al proyecto de Apps Script
-```
+## Archivos
+
+| Archivo | Para qué |
+|---|---|
+| `index.html`, `styles.css`, `app.js` | la aplicación |
+| `logo.svg` | logo por defecto |
+| `icon*.png`, `icon.svg`, `manifest.webmanifest`, `sw.js` | icono, instalación en el móvil y uso sin conexión |
