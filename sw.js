@@ -1,5 +1,5 @@
 // Permite abrir la aplicación sin conexión: primero intenta la red y, si no hay, usa la copia guardada.
-const CACHE = 'facturas-v1';
+const CACHE = 'facturas-v2';
 self.addEventListener('install', () => self.skipWaiting());
 self.addEventListener('activate', e => e.waitUntil(self.clients.claim()));
 self.addEventListener('fetch', e => {
